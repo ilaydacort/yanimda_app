@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yanımda - Acil Yardım</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Line icons (Phosphor Icons for minimalist look) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- TELEFON 1: GÖNDERİCİ -->
+        <div class="phone" id="phone-sender">
+            <div class="phone-header">
+                <span class="time">09:41</span>
+                <div class="status-bar">
+                    <i class="ph ph-cell-signal-full"></i>
+                    <i class="ph ph-wifi-high"></i>
+                    <i class="ph ph-battery-full"></i>
+                </div>
+            </div>
+
+            <div class="phone-content">
+                <!-- EKRAN 1: Ana Ekran (SOS) -->
+                <div class="screen active" id="sender-screen-sos">
+                    <button class="settings-btn" id="btn-settings">
+                        <i class="ph ph-gear"></i>
+                    </button>
+                    
+                    <div class="sos-container">
+                        <div class="sos-glow"></div>
+                        <button class="sos-btn" id="btn-sos">SOS</button>
+                    </div>
+
+                    <div class="bottom-section">
+                        <div class="dropdown">
+                            <label>Mesaj Gönderilecek Kişi</label>
+                            <div class="select-box" id="sos-select-box">
+                                <img src="https://ui-avatars.com/api/?name=Tum+Kisiler&background=random" alt="Avatar" class="avatar-small" id="sos-select-avatar">
+                                <span id="sos-select-text">Tüm Güvenli Kişiler</span>
+                                <i class="ph ph-caret-down"></i>
+                            </div>
+                            <div class="dropdown-list" id="sos-dropdown-list" style="display: none;">
+                                <!-- Dynamically populated by app.js -->
+                            </div>
+                        </div>
+                        <p class="footer-text">Her an yanınızdayız</p>
+                    </div>
+                </div>
+
+                <!-- EKRAN 2: Yardım Gönderildi -->
+                <div class="screen" id="sender-screen-sent">
+                    <div class="header-gradient"></div>
+                    <div class="sent-content">
+                        <h1 class="title">YARDIM TALEBİ<br>İLETİLDİ!</h1>
+                        <p class="subtitle">Mesajlar gönderildi</p>
+                        
+                        <div class="contact-list mt-8" id="sent-contact-list">
+                            <!-- Dynamically populated by app.js -->
+                        </div>
+
+                        <div class="waiting-text">
+                            Bildirim bekleniyor<span class="dots">...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EKRAN 3: Ayarlar -->
+                <div class="screen" id="sender-screen-settings">
+                    <div class="nav-bar">
+                        <button class="back-btn" id="btn-back-sos">
+                            <i class="ph ph-caret-left"></i>
+                        </button>
+                        <h2>Güvenlik Kişileri</h2>
+                        <div style="width: 24px;"></div>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <div class="add-contact-box">
+                            <input type="text" id="new-contact-name" placeholder="İsim" class="input-field">
+                            <input type="tel" id="new-contact-phone" placeholder="Telefon (11 Hane)" class="input-field" maxlength="11">
+                            <button class="btn-primary" id="btn-add-contact"><i class="ph ph-plus"></i> Ekle</button>
+                        </div>
+
+                        <div class="saved-contacts mt-8">
+                            <div id="settings-contact-list">
+                                <!-- Dynamically populated by app.js -->
+                            </div>
+                            
+                            <!-- Popup Simulation -->
+                            <div class="delete-popup" id="delete-popup" style="display: none;">
+                                <div class="popup-content">
+                                    <p>Emin misiniz?</p>
+                                    <div class="popup-actions">
+                                        <button class="btn-cancel" id="btn-cancel-delete">İptal</button>
+                                        <button class="btn-danger" id="btn-confirm-delete">Sil</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="home-indicator"></div>
+        </div>
+
+        <!-- TELEFON 2: ALICI -->
+        <div class="phone" id="phone-receiver">
+            <div class="phone-header">
+                <span class="time">09:41</span>
+                <div class="status-bar">
+                    <i class="ph ph-cell-signal-full"></i>
+                    <i class="ph ph-wifi-high"></i>
+                    <i class="ph ph-battery-full"></i>
+                </div>
+            </div>
+
+            <!-- Push Notification Pop-up -->
+            <div class="push-notification" id="incoming-notification">
+                <div class="notif-header">
+                    <div class="app-info">
+                        <div class="app-icon"></div>
+                        <span>Yanımda</span>
+                    </div>
+                    <span class="notif-time">Şimdi</span>
+                </div>
+                <div class="notif-body">
+                    <h4>Yardım talebi!</h4>
+                    <p>Acil durum! Yardıma ihtiyacım var.</p>
+                </div>
+                <div class="notif-actions">
+                    <button class="btn-notif-secondary" id="btn-notif-close">Kapat</button>
+                    <button class="btn-notif-primary" id="btn-notif-view">Gör</button>
+                </div>
+            </div>
+
+            <div class="phone-content">
+                <!-- EKRAN 1: Alıcı Ana Ekran (Bekleme Modu) -->
+                <div class="screen active" id="receiver-screen-standby">
+                    <div class="standby-content">
+                        <div class="logo-container">
+                            <div class="logo-icon"><i class="ph-fill ph-heartbeat"></i></div>
+                            <span class="logo-text">Yanımda</span>
+                        </div>
+                        <div class="waiting-text bottom-text">
+                            Bekleniyor<span class="dots">...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EKRAN 2: Mesajlaşma Ekranı -->
+                <div class="screen" id="receiver-screen-chat">
+                    <div class="nav-bar">
+                        <button class="back-btn" id="btn-back-standby">
+                            <i class="ph ph-caret-left"></i>
+                        </button>
+                        <div class="chat-header-info">
+                            <img src="https://ui-avatars.com/api/?name=Ilayda&background=E53935&color=fff" alt="Avatar" class="avatar-small">
+                            <div class="chat-user">
+                                <span class="name">İlayda</span>
+                                <span class="status-online"><span class="dot"></span> Çevrimiçi</span>
+                            </div>
+                        </div>
+                        <div style="width: 24px;"></div>
+                    </div>
+
+                    <div class="chat-area" id="chat-messages">
+                        <!-- Messages will appear here -->
+                    </div>
+
+                    <div class="chat-input-area">
+                        <div class="input-wrapper">
+                            <input type="text" id="chat-input" placeholder="Mesaj yazın..." value="Yardım talebinizi aldım. ">
+                            <button class="btn-send" id="btn-send-msg">
+                                <i class="ph-fill ph-paper-plane-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="home-indicator"></div>
+        </div>
+
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
