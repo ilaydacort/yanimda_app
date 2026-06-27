@@ -4,7 +4,7 @@
 
 ## 👤 Öğrenci Bilgileri
 
-| **İsim Soyad** | İlayda Çört |
+| **İsim Soyisim** | İlayda Çört |
 | **Öğrenci No** | 24010501023 |
 
 ---
